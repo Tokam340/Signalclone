@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1053031300204",
+    "project_id": "signal-191bb",
+    "storage_bucket": "signal-191bb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1053031300204:android:6723f52f074fa24124ec49",
+        "android_client_info": {
+          "package_name": "com.kaibba"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1053031300204-m2cfq3kl09njno382i8eagq5kaklcuca.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7RUTvl_B2-oV3Ap3Vc_7lQ_jd28kAMmM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1053031300204-m2cfq3kl09njno382i8eagq5kaklcuca.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
