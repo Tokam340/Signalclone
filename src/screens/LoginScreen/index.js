@@ -1,41 +1,38 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import {View, ActivityIndicator, Text, StatusBar, StyleSheet, Image, TextInput, KeyboardAvoidingView, TouchableOpacity} from 'react-native';
 import auth from '@react-native-firebase/auth';
 
 
-class LoginScreen extends Component {
-    state = { 
-        email: '',
-        password: '',
-        error: '',
-        isloading: false
-     }
+function LoginScreen ({navigation}) {
 
-    login = () => {
-        auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+     const [email, setEmail] = useState('')
+     const [password, setPassword] = useState('')
+     const [error, setError] = useState('')
+     const [isloading, setIsLoading] = useState(false)
+
+    const login = () => {
+        auth().signInWithEmailAndPassword(email, password)
         .then(() => {
-            this.setState({isloading: true})
-            this.props.navigation.navigate('Home')
+            setIsLoading(true)
+            navigation.navigate('Home')
         })
         .catch((error) => {
-            this.setState({isloading: true})
+            setIsLoading(true)
             if(error.code === 'auth/wrong-password'){
-                this.setState({error: 'The password is wrong'})
+                setError('The password is wrong')
             }
             if (error.code === 'auth/email-already-in-use') {
-                this.setState({error: 'That email address is already in use!'});
+                setError('That email address is already in use!')
               }
           
             if (error.code === 'auth/invalid-email') {
-                this.setState({error: 'That email address is invalid!'});
+                setError('That email address is invalid!')
               }
         })
-        .finally(() => this.setState({isloading: false}))
+        .finally(() => setIsLoading(false))
     }
 
-    render() { 
-
-        const {email, password, error, isloading} = this.state
+    
 
         return (
             <KeyboardAvoidingView behavior="padding" style={styles.container}>
@@ -44,27 +41,29 @@ class LoginScreen extends Component {
                 <Image style={styles.logo} source={require('../../assets/logo.png')} />
                 
                 <TextInput
-                    onChangeText={(email) => this.setState({email})}
+                    onChangeText={(email) => setEmail(email)}
                     style={styles.textInput}
                     placeholder="Email"
                     keyboardType="email-address"
+                    value={email}
                 />
 
                 <TextInput
-                    onChangeText={(password) => this.setState({password})}
+                    onChangeText={(password) => setPassword(password)}
                     style={styles.textInput}
                     secureTextEntry
                     placeholder="Password"
+                    value={password}
                 />
 
                 { isloading ? <ActivityIndicator size={30} color="blue" /> : <Text style={styles.error}>{error}</Text>}
 
-                <TouchableOpacity onPress={this.login} style={styles.login}>
+                <TouchableOpacity onPress={login} style={styles.login}>
                     <Text style={{textAlign: 'center', color: '#fff'}}>Login</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                    onPress={() => this.props.navigation.navigate('Register')}
+                    onPress={() => navigation.navigate('Register')}
                     style={[styles.login, styles.register]}
                 >
                     <Text style={{textAlign: 'center', color: '#000'}}>Register</Text>
@@ -72,7 +71,6 @@ class LoginScreen extends Component {
 
             </KeyboardAvoidingView>
          );
-    }
 }
 
 const styles = StyleSheet.create({

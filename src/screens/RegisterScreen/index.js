@@ -1,28 +1,26 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import {View, Text, StatusBar, StyleSheet, Image, TextInput, KeyboardAvoidingView, TouchableOpacity, ScrollView} from 'react-native';
 import auth from '@react-native-firebase/auth';
 
-class RegisterScreen extends Component {
-    state = { 
-        name: '',
-        email: '',
-        password: '',
-        imageUrl: ''
-     }
+function RegisterScreen ({navigation}) {
 
-    register = () => {
-        auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
+    const [name, setName] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [imageUrl, setImageUrl] = useState('')
+
+    const register = () => {
+        auth().createUserWithEmailAndPassword(email, password)
         .then((authUser) => {
             authUser.user.updateProfile({
-                displayName: this.state.name,
-                photoURL: this.state.imageUrl || 'https://static.theceomagazine.net/wp-content/uploads/2018/10/15093202/elon-musk.jpg'
+                displayName: name,
+                photoURL: imageUrl || 'https://static.theceomagazine.net/wp-content/uploads/2018/10/15093202/elon-musk.jpg'
             })
-            this.props.navigation.navigate('Login')
+            navigation.navigate('Login')
         })
         .catch((error) => console.log(error))
     }
 
-    render() { 
         return (
             <KeyboardAvoidingView behavior="padding" style={styles.container}>
                     <StatusBar hidden />
@@ -30,33 +28,33 @@ class RegisterScreen extends Component {
                     <Text style={styles.title}>Create a Signal account</Text>
                     
                     <TextInput
-                        onChangeText={(name) => this.setState({name})}
+                        onChangeText={(name) => setName(name)}
                         style={styles.textInput}
                         placeholder="Full Name"
                     />
 
                     <TextInput
-                        onChangeText={(email) => this.setState({email})}
+                        onChangeText={(email) => setEmail(email)}
                         style={styles.textInput}
                         placeholder="Email"
                         keyboardType="email-address"
                     />
 
                     <TextInput
-                        onChangeText={(password) => this.setState({password})}
+                        onChangeText={(password) => setPassword(password)}
                         style={styles.textInput}
                         secureTextEntry
                         placeholder="Password"
                     />
 
                     <TextInput
-                        onChangeText={(imageUrl) => this.setState({imageUrl})}
+                        onChangeText={(imageUrl) => setImageUrl(imageUrl)}
                         style={styles.textInput}
                         placeholder="Profil picture(optionnal)"
                     />
 
                     <TouchableOpacity
-                        onPress={this.register}
+                        onPress={register}
                         style={styles.register}
                     >
                         <Text style={{textAlign: 'center', color: '#fff'}}>Register</Text>
@@ -64,7 +62,6 @@ class RegisterScreen extends Component {
 
                 </KeyboardAvoidingView>
          );
-    }
 }
 
 const styles = StyleSheet.create({
